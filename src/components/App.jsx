@@ -52,30 +52,6 @@ export const App = () => {
     getImages();
   }, [value, page]);
 
-  // async componentDidUpdate(prevProps, prevState) {
-  //   const { value, page } = this.state;
-  //   if (prevState.value !== value || prevState.page !== page) {
-  //     this.setState({ isLoading: true });
-  //     const valueArr = value.split('/');
-  //     const requestValue = valueArr[1];
-  //     try {
-  //       const { totalHits, hits } = await getSearch(requestValue, page);
-  //       if (hits.length === 0) {
-  //         toast.error('Sorry, nothing found');
-  //         return;
-  //       }
-  //       this.setState(prevState => ({
-  //         images: [...prevState.images, ...hits],
-  //         totalImg: totalHits,
-  //       }));
-  //     } catch (error) {
-  //       this.setState({ error: toast.error('Oops! Something went wrong...') });
-  //     } finally {
-  //       this.setState({ isLoading: false });
-  //     }
-  //   }
-  // }
-
   const onMore = () => {
     setPage(prevPage => prevPage + 1);
   };
@@ -93,7 +69,7 @@ export const App = () => {
     <Layout>
       <Searchbar onSubmit={handleSubmit} />
       {isLoading && <Loader />}
-      {images.length !== 0 && (
+      {images.length !== 0 && !error && (
         <ImageGallery images={images} onClick={openModal} />
       )}
       {images.length > 0 && images.length < totalImg && (
