@@ -1,34 +1,32 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import { Overlay, ModalPortal } from './Modal.styled';
 
-export class Modal extends Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.onEscape);
-  }
+export const Modal = ({ url, onClose }) => {
+  useEffect(() => {
+    window.addEventListener('keydown', onEscape);
 
-  onEscape = evt => {
+    return () => {
+      window.removeEventListener('keydown', onEscape);
+    };
+  });
+
+  const onEscape = evt => {
     if (evt.code === 'Escape') {
-      this.props.onClose();
+      onClose();
     }
   };
 
-  closeOnBaackdropClick = evt => {
+  const closeOnBaackdropClick = evt => {
     if (evt.currentTarget === evt.target) {
-      this.props.onClose();
+      onClose();
     }
   };
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.onEscape);
-  }
-
-  render() {
-    return (
-      <Overlay onClick={this.closeOnBaackdropClick}>
-        <ModalPortal>
-          <img src={this.props.url} alt="" />
-        </ModalPortal>
-      </Overlay>
-    );
-  }
-}
+  return (
+    <Overlay onClick={closeOnBaackdropClick}>
+      <ModalPortal>
+        <img src={url} alt="" />
+      </ModalPortal>
+    </Overlay>
+  );
+};
